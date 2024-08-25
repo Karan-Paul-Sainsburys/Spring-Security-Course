@@ -21,11 +21,15 @@ public class SecurityConfig {
     @Bean
     SecurityFilterChain defaultSecurityFilterChain(HttpSecurity http) throws Exception {
 //        http.requiresChannel(rcf->rcf.anyRequest().requiresSecure()) //will allow only https hit
-        http.sessionManagement(smc -> smc.invalidSessionUrl("/invalidSession")) //for redirecting to different url for session login
+
+        //this allowes the session management to restrict to 2 sessions and maxSessions.. disables
+        //further login if the max is reached and expiredURL redirects to a different custom page for it
+        http.sessionManagement(smc->smc.maximumSessions(2).maxSessionsPreventsLogin(true).expiredUrl("/current-sessions"));
+        http.sessionManagement(smc -> smc.invalidSessionUrl("/invalidSession")) //for redirecting to different url for session login when expired
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests((requests) -> requests
                 .requestMatchers("/myAccount","/myCard","/myBalance","/myLoans").authenticated()
-                .requestMatchers("/notices","/contacts","/welcome").permitAll());
+                .requestMatchers("/notices","/contacts","/welcome","/current-sessions").permitAll());
         http.formLogin(withDefaults());
         http.httpBasic(hfc -> hfc.authenticationEntryPoint(new CustomAuthenticationEntryPoint())); //for
         // invoking the custom authentication entry point for basic auth.
