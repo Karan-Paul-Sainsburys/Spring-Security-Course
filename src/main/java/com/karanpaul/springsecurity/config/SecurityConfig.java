@@ -1,5 +1,6 @@
 package com.karanpaul.springsecurity.config;
 
+import com.karanpaul.springsecurity.exceptionHandling.CustomAuthenticationEntryPoint;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
@@ -24,7 +25,11 @@ public class SecurityConfig {
                 .requestMatchers("/myAccount","/myCard","/myBalance","/myLoans").authenticated()
                 .requestMatchers("/notices","/contacts","/welcome").permitAll());
         http.formLogin(withDefaults());
-        http.httpBasic(withDefaults());
+        http.httpBasic(hfc -> hfc.authenticationEntryPoint(new CustomAuthenticationEntryPoint())); //for
+        // invoking the custom authentication entry point for basic auth.
+
+        //for global exception handling, we can use this as well and this will handle all global exception which we write within the class.
+        //http.exceptionHandling(ehc->ehc.authenticationEntryPoint(new CustomAuthenticationEntryPoint()));
         return http.build();
     }
 
