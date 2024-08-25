@@ -21,9 +21,9 @@ public class SecurityConfig {
     @Bean
     SecurityFilterChain defaultSecurityFilterChain(HttpSecurity http) throws Exception {
 //        http.requiresChannel(rcf->rcf.anyRequest().requiresSecure()) //will allow only https hit
-
         //this allowes the session management to restrict to 2 sessions and maxSessions.. disables
         //further login if the max is reached and expiredURL redirects to a different custom page for it
+//        http.sessionManagement(smc->smc.sessionFixation(sfc->sfc.migrateSession())); //setting the session to migrateSession startegy
         http.sessionManagement(smc->smc.maximumSessions(2).maxSessionsPreventsLogin(true).expiredUrl("/current-sessions"));
         http.sessionManagement(smc -> smc.invalidSessionUrl("/invalidSession")) //for redirecting to different url for session login when expired
                 .csrf(AbstractHttpConfigurer::disable)
