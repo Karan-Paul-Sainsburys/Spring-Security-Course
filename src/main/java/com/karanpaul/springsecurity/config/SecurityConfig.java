@@ -21,7 +21,8 @@ public class SecurityConfig {
     @Bean
     SecurityFilterChain defaultSecurityFilterChain(HttpSecurity http) throws Exception {
 //        http.requiresChannel(rcf->rcf.anyRequest().requiresSecure()) //will allow only https hit
-        http.csrf(AbstractHttpConfigurer::disable)
+        http.sessionManagement(smc -> smc.invalidSessionUrl("/invalidSession")) //for redirecting to different url for session login
+                .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests((requests) -> requests
                 .requestMatchers("/myAccount","/myCard","/myBalance","/myLoans").authenticated()
                 .requestMatchers("/notices","/contacts","/welcome").permitAll());
