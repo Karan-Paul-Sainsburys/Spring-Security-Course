@@ -1,5 +1,6 @@
 package com.karanpaul.springsecurity.config;
 
+import com.karanpaul.springsecurity.exceptionHandling.CustomAccessDeniedHandler;
 import com.karanpaul.springsecurity.exceptionHandling.CustomAuthenticationEntryPoint;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -30,6 +31,7 @@ public class SecurityConfig {
 
         //for global exception handling, we can use this as well and this will handle all global exception which we write within the class.
         //http.exceptionHandling(ehc->ehc.authenticationEntryPoint(new CustomAuthenticationEntryPoint()));
+        http.exceptionHandling(ehc->ehc.accessDeniedHandler(new CustomAccessDeniedHandler()));
         return http.build();
     }
 
