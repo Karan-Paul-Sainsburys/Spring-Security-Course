@@ -28,7 +28,7 @@ public class SecurityConfig {
         http.sessionManagement(smc -> smc.invalidSessionUrl("/invalidSession")) //for redirecting to different url for session login when expired
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests((requests) -> requests
-                .requestMatchers("/myAccount","/myCard","/myBalance","/myLoans").authenticated()
+                .requestMatchers("/myAccount","/myCard","/myBalance","/myLoans","/user").authenticated()
                 .requestMatchers("/notices","/contacts","/welcome","/current-sessions").permitAll());
         http.formLogin(withDefaults());
         http.httpBasic(hfc -> hfc.authenticationEntryPoint(new CustomAuthenticationEntryPoint())); //for

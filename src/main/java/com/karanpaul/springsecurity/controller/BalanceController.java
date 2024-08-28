@@ -1,13 +1,28 @@
 package com.karanpaul.springsecurity.controller;
 
+import com.karanpaul.springsecurity.model.AccountTransactions;
+import com.karanpaul.springsecurity.repository.AccountTransactionsRepository;
+import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.List;
+
 @RestController
+@RequiredArgsConstructor
 public class BalanceController {
 
+    private final AccountTransactionsRepository accountTransactionsRepository;
+
     @GetMapping("/myBalance")
-    public String getBalanceDetails(){
-        return "This is the balance from my account";
+    public List<AccountTransactions> getBalanceDetails(@RequestParam long id) {
+        List<AccountTransactions> accountTransactions = accountTransactionsRepository.
+                findByCustomerIdOrderByTransactionDtDesc(id);
+        if (accountTransactions != null) {
+            return accountTransactions;
+        } else {
+            return null;
+        }
     }
 }
