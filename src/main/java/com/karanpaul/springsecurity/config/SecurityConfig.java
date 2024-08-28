@@ -25,11 +25,12 @@ public class SecurityConfig {
         //further login if the max is reached and expiredURL redirects to a different custom page for it
 //        http.sessionManagement(smc->smc.sessionFixation(sfc->sfc.migrateSession())); //setting the session to migrateSession strategy
         http.sessionManagement(smc->smc.maximumSessions(2).maxSessionsPreventsLogin(true).expiredUrl("/current-sessions"));
-        http.sessionManagement(smc -> smc.invalidSessionUrl("/invalidSession")) //for redirecting to different url for session login when expired
-                .csrf(AbstractHttpConfigurer::disable)
+        //http.sessionManagement(smc -> smc.invalidSessionUrl("/invalidSession")) //for redirecting to different url for session login when expired
+        http.cors(httpSecurityCorsConfigurer -> httpSecurityCorsConfigurer.configurationSource(new WebCORSConfigurations()));
+                http.csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests((requests) -> requests
                 .requestMatchers("/myAccount","/myCard","/myBalance","/myLoans","/user").authenticated()
-                .requestMatchers("/notices","/contacts","/welcome","/current-sessions").permitAll());
+                .requestMatchers("/notices","/contacts","/welcome","/current-sessions","/register").permitAll());
         http.formLogin(withDefaults());
         http.httpBasic(hfc -> hfc.authenticationEntryPoint(new CustomAuthenticationEntryPoint())); //for
         // invoking the custom authentication entry point for basic auth.

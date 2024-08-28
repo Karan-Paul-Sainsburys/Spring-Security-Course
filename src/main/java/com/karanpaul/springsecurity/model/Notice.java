@@ -31,7 +31,7 @@ public class Notice {
     @Column(name = "notic_end_dt")
     private Date noticEndDt;
 
-    @JsonIgnore
+    @JsonIgnore // the client application will not get this field in the output
     @Column(name = "create_dt")
     private Date createDt;
 
