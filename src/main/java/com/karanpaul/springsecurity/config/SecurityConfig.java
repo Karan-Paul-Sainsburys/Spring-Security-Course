@@ -59,7 +59,10 @@ public class SecurityConfig {
 //    }
     @Bean
     SecurityFilterChain defaultSecurityFilterChain(HttpSecurity http) throws Exception {
+        //this class is responsible to receive the csrf token value from the resuqest header from UI and perform the validation in the csrfFilter class.
         CsrfTokenRequestAttributeHandler csrfTokenRequestAttributeHandler = new CsrfTokenRequestAttributeHandler();
+        //next 2 lines enables the creation of Jsession id and store in the security context
+        //this is mainly used when we want our own login page
         http.securityContext(contextConfig -> contextConfig.requireExplicitSave(false))
             .sessionManagement(sessionConfig -> sessionConfig.sessionCreationPolicy(SessionCreationPolicy.ALWAYS))
             .cors(corsConfig -> corsConfig.configurationSource(new WebCORSConfigurations()))
