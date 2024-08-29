@@ -17,6 +17,8 @@ public class CsrfCookieFilter extends OncePerRequestFilter {
      * @throws ServletException
      * @throws IOException
      */
+
+    //this is used to send the csrf-token as part of response header
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
         CsrfToken csrfToken = (CsrfToken) request.getAttribute(CsrfToken.class.getName());
