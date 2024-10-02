@@ -11,8 +11,11 @@ import org.springframework.security.authentication.password.CompromisedPasswordC
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
+import org.springframework.security.core.userdetails.User;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.factory.PasswordEncoderFactories;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.password.HaveIBeenPwnedRestApiPasswordChecker;
 import org.springframework.security.web.authentication.www.BasicAuthenticationFilter;
@@ -27,14 +30,13 @@ import java.util.Collections;
 
 import static org.springframework.security.config.Customizer.withDefaults;
 
-@Configuration
 @Profile("!prod") // other than prod for all profile this will be used
 public class SecurityConfig {
 //    @Bean
 //    SecurityFilterChain defaultSecurityFilterChain(HttpSecurity http) throws Exception {
 //        CsrfTokenRequestAttributeHandler csrfTokenRequestAttributeHandler = new CsrfTokenRequestAttributeHandler();
 ////        http.requiresChannel(rcf->rcf.anyRequest().requiresSecure()) //will allow only https hit
-//        //this allowes the session management to restrict to 2 sessions and maxSessions.. disables
+//        //this allows the session management to restrict to 2 sessions and maxSessions.. disables
 //        //further login if the max is reached and expiredURL redirects to a different custom page for it
 ////        http.sessionManagement(smc->smc.sessionFixation(sfc->sfc.migrateSession())); //setting the session to migrateSession strategy
 ////        http.sessionManagement(smc->smc.maximumSessions(2).maxSessionsPreventsLogin(true).expiredUrl("/current-sessions"));  giving maximum session and redirecting to a URL
@@ -94,5 +96,11 @@ public class SecurityConfig {
     @Bean
     CompromisedPasswordChecker compromisedPasswordChecker(){
         return new HaveIBeenPwnedRestApiPasswordChecker();
+    }
+
+    @Bean
+    public InMemoryUserDetailsManager userDetailsManager(){
+        UserDetails user1 = User.withUsername("Karan").password("Paul").build();
+        return new InMemoryUserDetailsManager(user1);
     }
 }
