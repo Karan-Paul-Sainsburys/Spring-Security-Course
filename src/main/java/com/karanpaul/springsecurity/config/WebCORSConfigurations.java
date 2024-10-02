@@ -5,7 +5,9 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 
+import java.util.Arrays;
 import java.util.Collections;
+import java.util.List;
 
 @Configuration
 public class WebCORSConfigurations implements CorsConfigurationSource {
@@ -21,6 +23,7 @@ public class WebCORSConfigurations implements CorsConfigurationSource {
         corsConfiguration.setAllowedHeaders(Collections.singletonList("*"));
         corsConfiguration.setAllowedMethods(Collections.singletonList("*"));
         corsConfiguration.setMaxAge(3600L);
+        corsConfiguration.setExposedHeaders(List.of("Authorization"));
         return corsConfiguration;
     }
 }
